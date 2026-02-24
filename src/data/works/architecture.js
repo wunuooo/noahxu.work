@@ -1,7 +1,7 @@
 // src/data/works/architecture.js
 
 export const architecture = {
-    order: 1, // 该类别在 TabPage 组件中的排序位置
+    order: 3, // 该类别在 TabPage 组件中的排序位置
     data: [
         {
             id: 'project1',

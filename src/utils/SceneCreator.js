@@ -9,6 +9,8 @@ export const createScene = (mountElement, navigate) => {
     // 创建场景
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xffffff);
+    // scene.background = null;
+
 
     const camera = new THREE.PerspectiveCamera(
         55,
@@ -34,7 +36,7 @@ export const createScene = (mountElement, navigate) => {
             document.body.style.overflow = 'hidden';
 
             const potatoes = await Promise.all(
-                Array(40).fill().map(() => createPotato(false))
+                Array(50).fill().map(() => createPotato(false))
             );
             potatoes.forEach(potato => {
                 scene.add(potato);

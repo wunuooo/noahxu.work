@@ -4,13 +4,8 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { TextureLoader } from 'three';
 import { RoundedRectangle } from './RoundedRecCreator';
-
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
-// import whitePotato from '../../assets/models/WhitePotato.gltf';
-// import whitePotatoGerminated from '../../assets/models/WhitePotatoGerminated.gltf';
-// import whitePotato from '../../assets/models/WhitePotato.glb';
-// import whitePotatoGerminated from '../../assets/models/WhitePotatoGerminated.glb';
 const whitePotato = '/assets/models/WhitePotato.glb';
 const whitePotatoGerminated = '/assets/models/WhitePotatoGerminated.glb';
 
@@ -19,15 +14,6 @@ const RADIUS = 10;
 export const createRoundedRectangle = () => {
     const loader = new TextureLoader();
     THREE.ColorManagement.enabled = true;  // 使用 color management
-
-    // const images = [
-    //     { path: require('../../assets/pics/others.jpg'), route: '/works/others' },
-    //     { path: require('../../assets/pics/architecture.jpg'), route: '/works/architecture' },
-    //     { path: require('../../assets/pics/craft.jpg'), route: '/works/craft' },
-    //     { path: require('../../assets/pics/gamedev.jpg'), route: '/works/gamedev' },
-    //     { path: require('../../assets/pics/photo.jpg'), route: '/works/photo' },
-    //     { path: require('../../assets/pics/tool.jpg'), route: '/works/tool' },
-    // ];
 
     const images = [
         { path: '/assets/pics/others.jpg', route: '/works/others' },
@@ -44,7 +30,6 @@ export const createRoundedRectangle = () => {
 
         return {
             map: texture,
-
             route: img.route,
             side: THREE.DoubleSide,
         };
@@ -70,15 +55,6 @@ export const createPotato = (isCenter) => {
     // 设置纹理加载器
     const textureCube = new THREE.CubeTextureLoader()
 
-    // 使用 require 加载纹理
-    // const cubeTexture = textureCube.load([
-    //     require('../../assets/textures/Standard-Cube-Map/px.png'),
-    //     require('../../assets/textures/Standard-Cube-Map/nx.png'),
-    //     require('../../assets/textures/Standard-Cube-Map/py.png'),
-    //     require('../../assets/textures/Standard-Cube-Map/ny.png'),
-    //     require('../../assets/textures/Standard-Cube-Map/pz.png'),
-    //     require('../../assets/textures/Standard-Cube-Map/nz.png')
-    // ]);
     const cubeTexture = textureCube.load([
         '/assets/textures/Standard-Cube-Map/px.jpg',
         '/assets/textures/Standard-Cube-Map/nx.jpg',
@@ -87,6 +63,26 @@ export const createPotato = (isCenter) => {
         '/assets/textures/Standard-Cube-Map/pz.jpg',
         '/assets/textures/Standard-Cube-Map/nz.jpg'
     ]);
+
+    //1网格土豆
+    function generateGridPositions(rows, cols, spacing) {
+        const positions = [];
+        const startX = -((cols - 1) * spacing) / 2;
+        const startZ = -((rows - 1) * spacing) / 2;
+
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < cols; j++) {
+                const x = startX + j * spacing;
+                const y = 0;
+                const z = startZ + i * spacing;
+                positions.push(new THREE.Vector3(x, y, z));
+            }
+        }
+        return positions;
+    }
+
+    const fixedPotatoPositions = generateGridPositions(5, 5, 20); // 5x5 网格，间距20
+    let potatoIndex = 0;
 
     if (!isCenter) {
         return new Promise((resolve, reject) => {
@@ -106,13 +102,17 @@ export const createPotato = (isCenter) => {
                     // 设置模型大小
                     model.scale.set(30, 30, 30);
 
-                    const angle = Math.random() * 2 * Math.PI;
-                    const radius = Math.sqrt(Math.random()) * 30; // 使用平方根调整分布
-                    const x = radius * Math.cos(angle);
-                    const y = radius * Math.sin(angle);
-                    const z = (Math.random() * 2 - 1.8) * 20; // 随机生成z轴位置
+                    // const angle = Math.random() * 2 * Math.PI;
+                    // const radius = Math.sqrt(Math.random()) * 30; // 使用平方根调整分布
+                    // const x = radius * Math.cos(angle);
+                    // const y = radius * Math.sin(angle);
+                    // const z = (Math.random() * 2 - 1.8) * 20; // 随机生成z轴位置
 
-                    model.position.set(x, y, z);
+                    // model.position.set(x, y, z);
+
+                    const pos = fixedPotatoPositions[potatoIndex % fixedPotatoPositions.length];
+                    potatoIndex += 1;
+                    model.position.copy(pos);
 
                     // 添加材质
                     // 遍历模型中的所有网格，给每个网格应用材质和纹理

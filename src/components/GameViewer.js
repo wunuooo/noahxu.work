@@ -13,7 +13,7 @@ const GameViewer = ({ buildPath }) => {
     });
 
     return (
-        <div className="w-full h-[70vh] flex justify-center items-center">
+        <div className="w-full h-full flex justify-center items-center">
             {!isLoaded && <p>加载中... {Math.round(loadingProgression * 100)}%</p>}
             <Unity
                 unityProvider={unityProvider}

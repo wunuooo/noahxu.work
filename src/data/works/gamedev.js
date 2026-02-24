@@ -1,24 +1,57 @@
 // src/data/works/gamedev.js
 
 export const gamedev = {
-    order: 4, // 该类别在 TabPage 组件中的排序位置
+    order: 1, // 该类别在 TabPage 组件中的排序位置
     data: [
         {
-            id: 'project1',
-            title: '大学生山地运动俱乐部设计',
-            shortDescription: '结合地形及周边人群流线的运动俱乐部建筑设计',
-            thumbnail: '/assets/images/works/architecture/project1.jpg',
+            id: 'BubbleTea',
+            title: 'BubbleTea',
+            shortDescription: '鼠标控制吸管，键盘S&B控制吸气&吐气，在奶茶喝完之前把小料都吸上来吧！',
+            thumbnail: '/assets/images/works/gamedev/BubbleTea.jpg',
             fullDetails: {
                 description: '（待补充）',
-                date: '2021年11月',
-                projectType: '公共建筑 | 体育建筑',
+                date: '2025年1月',
+                projectType: '游戏设计 | 休闲游戏',
                 participants: ['Nuo'],
+                buildPath: '/assets/games/BubbleTea',
                 images: [
-                    '/assets/images/works/architecture/project1/detail1.jpg',
-                    '/assets/images/works/architecture/project1/detail2.jpg',
+                    '/assets/images/works/gamedev/BubbleTea/detail1.jpg',
                 ]
             }
         },
-        // 其他项目
+        {
+            id: 'ChamaAbacus',
+            title: 'ChamaAbacus',
+            shortDescription: '鼠标控制吸管，键盘S&B控制吸气&吐气，在奶茶喝完之前把小料都吸上来吧！',
+            thumbnail: '/assets/images/works/gamedev/ChamaAbacus.jpg',
+            fullDetails: {
+                description: '（待补充）',
+                date: '2024年4月',
+                projectType: '游戏设计 | 休闲游戏',
+                participants: ['Nuo'],
+                buildPath: '/assets/games/ChamaAbacus',
+                images: [
+                    '/assets/images/works/gamedev/ChamaAbacus/detail1.jpg',
+                    '/assets/images/works/gamedev/ChamaAbacus/detail2.jpg',
+                ]
+            }
+        },
+        {
+            id: 'WarriorLegend',
+            title: 'WarriorLegend',
+            shortDescription: '鼠标控制吸管，键盘S&B控制吸气&吐气，在奶茶喝完之前把小料都吸上来吧！',
+            thumbnail: '/assets/images/works/gamedev/WarriorLegend.jpg',
+            fullDetails: {
+                description: '（待补充）',
+                date: '2024年4月',
+                projectType: '游戏设计 | 休闲游戏',
+                participants: ['Nuo'],
+                buildPath: '/assets/games/WarriorLegend',
+                images: [
+                    '/assets/images/works/gamedev/WarriorLegend/detail1.jpg',
+                ]
+            }
+        },
+
     ]
 };

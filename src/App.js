@@ -15,11 +15,20 @@ import Loader from './components/Loader';
 import { ReactLenis } from 'lenis/react';
 import CustomCursor from "./utils/CustomMouse";
 import { ModelLoadingState } from './utils/ModelLoadingState';
+// import { BackgroundCanvas } from './utils/BackgroundCanvas';
+
 
 // 处理路由变化和模型加载状态
 const AppContent = () => {
   const location = useLocation();
   const [showLoader, setShowLoader] = useState(false);
+
+
+
+  // useEffect(() => {
+  //   // 初始化背景动画，只运行一次
+  //   BackgroundCanvas();
+  // }, []);
 
   useEffect(() => {
     // 当路由变化时，重置模型加载状态，回到主页面重新加载Loader

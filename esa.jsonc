@@ -1,0 +1,9 @@
+{
+  "name": "noahxu-work-esa",
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
+  "assets": {
+    "directory": "./build",
+    "notFoundStrategy": "singlePageApplication"
+  }
+}

@@ -5,13 +5,13 @@ import { RADIUS } from './GeometryCreator';
 import { CAMERAHEIGHT } from './CameraControler'
 import { modelStore } from './ModelStore';
 import { ModelLoadingState } from './ModelLoadingState';
+import * as THREE from 'three';
 
 export const animateScene = (renderer, scene, camera, faceMeshes) => {
     let angleOffset = 0;
     let rotationSpeed = 0;
     let radius = RADIUS;
     let centerPotato;
-    let othersPotato;
     const ROTATION_DAMPING_FACTOR = 0.85;
     const ROTATION_SPEED_FACTOR = 0.02;
     const HEIGHT_LERP_FACTOR = 0.2; // 控制高度平滑过渡的速度
@@ -20,9 +20,6 @@ export const animateScene = (renderer, scene, camera, faceMeshes) => {
     // 初始化订阅
     modelStore.subscribe('potato', (potato) => {
         centerPotato = potato;
-    });
-    modelStore.subscribe('potatoes', (potatoes) => {
-        othersPotato = potatoes;
     });
 
     // 初始化每个物体的 userData 属性
@@ -83,13 +80,10 @@ export const animateScene = (renderer, scene, camera, faceMeshes) => {
 
         camera.position.y = CAMERAHEIGHT - 10 * t;
 
-        centerPotato.rotation.y = Math.PI * 2 * t;
-        centerPotato.position.y = -5 + 10 * t;
-        othersPotato.forEach(potato => {
-            potato.rotation.x += Math.PI * 0.01 * t;
-            potato.rotation.y += Math.PI * 0.01 * t;
-            potato.rotation.z += Math.PI * 0.01 * t;
-        });
+        if (centerPotato) {
+            centerPotato.rotation.y = Math.PI * 2 * t;
+            centerPotato.position.y = -5 + 10 * t;
+        }
         faceMeshes.forEach((mesh) => {
             mesh.position.y = 2 - (1 / (1 + Math.exp(10 * (t + 0.8)))) * (1000000);
         });

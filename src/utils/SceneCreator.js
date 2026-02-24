@@ -35,14 +35,6 @@ export const createScene = (mountElement, navigate) => {
         try {
             document.body.style.overflow = 'hidden';
 
-            const potatoes = await Promise.all(
-                Array(50).fill().map(() => createPotato(false))
-            );
-            potatoes.forEach(potato => {
-                scene.add(potato);
-                modelStore.setPotatoes(potato);
-            });
-
             const centerPotato = await createPotato(true);
             scene.add(centerPotato);
             modelStore.setPotato(centerPotato);

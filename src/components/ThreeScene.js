@@ -39,7 +39,7 @@ const ThreeScene = () => {
         let onMouseMove, onMouseDown, onMouseUp, onMouseClick;
         const mountElement = mountRef.current;
 
-        // 仅在初始时创建场景
+        // Create scene only on initialization
         const initScene = () => {
             ({ scene, camera, renderer, faceMeshes } = createScene(mountElement, navigate));
             updateRotationSpeed = animateScene(renderer, scene, camera, faceMeshes);

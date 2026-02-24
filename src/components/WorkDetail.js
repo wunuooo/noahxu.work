@@ -48,9 +48,9 @@ const WorkDetail = () => {
                     <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
                         {/* 左：项目信息 */}
                         <div className="w-full md:w-1/2 space-y-4">
-                            <h1 className="text-3xl font-bold">{work.title}</h1>
-                            <p className="text-gray-700">{details.description}</p>
-                            <div className="space-y-2">
+                            <h1 className="text-2xl md:text-3xl font-bold">{work.title}</h1>
+                            <p className="text-base md:text-lg text-gray-700">{details.description}</p>
+                            <div className="space-y-2 text-sm md:text-base">
                                 <p><strong>日期:</strong> {details.date}</p>
                                 <p><strong>项目类型:</strong> {details.projectType}</p>
                                 <p><strong>参与人员:</strong> {details.participants.join(', ')}</p>
@@ -87,10 +87,10 @@ const WorkDetail = () => {
                 <div className="container mx-auto my-8 p-4 main_content flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
                     {/* 左侧文字内容 */}
                     <div className="w-full md:w-1/2 space-y-4">
-                        <h1 className="text-3xl font-bold">{work.title}</h1>
-                        <p className="text-gray-700">{details.description}</p>
+                        <h1 className="text-2xl md:text-3xl font-bold">{work.title}</h1>
+                        <p className="text-base md:text-lg text-gray-700">{details.description}</p>
 
-                        <div className="space-y-2">
+                        <div className="space-y-2 text-sm md:text-base">
                             <p><strong>日期:</strong> {details.date}</p>
                             <p><strong>项目类型:</strong> {details.projectType}</p>
                             <p><strong>参与人员:</strong> {details.participants.join(', ')}</p>

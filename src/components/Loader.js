@@ -1,11 +1,12 @@
 // src/components/Loader.js
-
 import Lottie from 'lottie-web';
-import React, { useEffect, useState, useRef } from 'react';
-// import animationData from '../assets/svg/loader.json';
+import React, { useEffect, useState } from 'react'; // Re-import useState
+import { ModelLoadingState } from '../utils/ModelLoadingState';
 
 const Loader = ({ onLoadComplete }) => {
     const animationData = '/assets/svg/loader.json';
+    const [hasCompletedOneCycle, setHasCompletedOneCycle] = useState(false); // State lock
+
     useEffect(() => {
         const animation = Lottie.loadAnimation({
             container: document.getElementById("logo_box"),
@@ -15,51 +16,52 @@ const Loader = ({ onLoadComplete }) => {
             path: animationData,
         });
 
-        let playCount = 0;
+        // Polling to check conditions for ending the loader
+        const intervalId = setInterval(() => {
+            // Conditions to end: models loaded AND at least one animation cycle is complete
+            if (ModelLoadingState.isModelsLoaded && hasCompletedOneCycle) {
+                clearInterval(intervalId); // Conditions met, clear interval
+                // Trigger exit animation
+                animation.removeEventListener('enterFrame', handleFrame);
+                animation.goToAndStop(55, true);
+                animation.play();
+            }
+        }, 100); // Check every 100ms
 
-        const handleEnterFrame = () => {
+        const handleFrame = () => {
             if (animation.currentFrame >= 55) {
-                if (playCount < 6) {
-                    // 移除之前的事件监听，防止重复触发
-                    animation.removeEventListener('enterFrame', handleEnterFrame);
-
-                    // 重新设置动画从0开始
+                // Mark that the first cycle has completed
+                if (!hasCompletedOneCycle) {
+                    setHasCompletedOneCycle(true);
+                }
+                
+                // If models are not loaded yet, loop the animation
+                if (!ModelLoadingState.isModelsLoaded) {
                     animation.goToAndStop(0, true);
-                    animation.play();
-
-                    // 重新添加事件监听
-                    animation.addEventListener('enterFrame', handleEnterFrame);
-                    playCount++;
-                } else {
-                    // 移除事件监听，防止重复触发
-                    animation.removeEventListener('enterFrame', handleEnterFrame);
-
-                    // 播放55帧之后的动画
-                    animation.goToAndStop(55, true);
                     animation.play();
                 }
             }
         };
 
-        animation.addEventListener('enterFrame', handleEnterFrame);
+        animation.addEventListener('enterFrame', handleFrame);
 
         animation.addEventListener('complete', () => {
-            // 动画完成后添加退出动画的类
             const loaderElement = document.querySelector('.loader');
             if (loaderElement) {
                 loaderElement.classList.add('loader-exit');
             }
-
-            // 稍微延迟调用onLoadComplete，让退出动画有时间执行
             setTimeout(() => {
                 onLoadComplete && onLoadComplete();
-            }, 500); // 根据CSS动画时长调整
+            }, 500);
         });
 
         return () => {
+            clearInterval(intervalId); // Ensure interval is cleared on component unmount
+            animation.removeEventListener('enterFrame', handleFrame);
             animation.destroy();
         };
-    }, [onLoadComplete]);
+    }, [onLoadComplete, hasCompletedOneCycle]); // Add hasCompletedOneCycle to dependency array
+
 
     return (
         <div className="loader" style={{

@@ -50,7 +50,7 @@ export const createRoundedRectangle = () => {
 export const createPotato = (isCenter) => {
 
     const draco = new DRACOLoader();
-    draco.setDecoderPath('./draco/');
+    draco.setDecoderPath('/draco/');
 
     // 设置纹理加载器
     const textureCube = new THREE.CubeTextureLoader()

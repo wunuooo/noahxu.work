@@ -15,28 +15,21 @@ import Loader from './components/Loader';
 import { ReactLenis } from 'lenis/react';
 import CustomCursor from "./utils/CustomMouse";
 import { ModelLoadingState } from './utils/ModelLoadingState';
-// import { BackgroundCanvas } from './utils/BackgroundCanvas';
-
+import useMediaQuery from './hooks/useMediaQuery';
 
 // 处理路由变化和模型加载状态
 const AppContent = () => {
   const location = useLocation();
   const [showLoader, setShowLoader] = useState(false);
-
-
-
-  // useEffect(() => {
-  //   // 初始化背景动画，只运行一次
-  //   BackgroundCanvas();
-  // }, []);
+  const isDesktop = useMediaQuery('(min-width: 768px)');
 
   useEffect(() => {
-    // 当路由变化时，重置模型加载状态，回到主页面重新加载Loader
-    if (location.pathname !== '/') {
-      ModelLoadingState.setLoadingState(false);
-    }
-    else {
+    // 仅当模型尚未加载并首次进入主页时，才显示加载动画
+    if (!ModelLoadingState.isModelsLoaded && location.pathname === '/') {
       setShowLoader(true);
+    } else {
+      // 对于所有其他情况（例如，模型已加载或不在主页上），确保加载动画是隐藏的
+      setShowLoader(false);
     }
   }, [location.pathname]);
 
@@ -57,7 +50,7 @@ const AppContent = () => {
     <ReactLenis root options={lenisOptions}>
       {showLoader && <Loader onLoadComplete={() => setShowLoader(false)} />}
       <div className="flex flex-col">
-        <CustomCursor />
+        {isDesktop && <CustomCursor />}
         <Navbar />
         <main>
           <Routes>

@@ -64,3 +64,11 @@ html.lenis, html.lenis body {
   z-index: 10000;
   will-change: transform;
 }
+
+.lottie-fade-loop {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.lottie-fade-loop.fade-out {
+  opacity: 0;
+}

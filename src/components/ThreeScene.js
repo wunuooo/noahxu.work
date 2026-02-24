@@ -5,35 +5,35 @@ import { createScene } from '../utils/SceneCreator';
 import { createEventHandlers } from '../utils/EventHandlers';
 import { animateScene } from '../utils/SceneAnimator';
 import { updateCameraPosition } from '../utils/CameraControler';
-import { modelStore } from '../utils/ModelStore';
 
 const ThreeScene = () => {
     const mountRef = useRef(null);
     const navigate = useNavigate();
-    const [height, setHeight] = useState('100vh');
-    const [initComplete, setInitComplete] = useState(false);
+    const [style, setStyle] = useState({});
 
-    const updateHeight = () => {
+    const updateLayout = () => {
         const navbarHeight = document.querySelector('.navbar')?.offsetHeight || 0;
         const footerHeight = document.querySelector('.footer')?.offsetHeight || 0;
         const newHeight = `calc(100vh - ${navbarHeight + footerHeight}px)`;
-        setHeight(newHeight);
+        
+        setStyle({
+            position: 'fixed',
+            top: `${navbarHeight}px`,
+            left: 0,
+            width: '100vw',
+            height: newHeight,
+            zIndex: -1
+        });
     };
 
     useEffect(() => {
-        updateHeight();
-        window.addEventListener('resize', updateHeight);
-        return () => window.removeEventListener('resize', updateHeight);
+        updateLayout();
+        window.addEventListener('resize', updateLayout);
+        return () => window.removeEventListener('resize', updateLayout);
     }, []);
 
     useEffect(() => {
-        if (height !== '100vh') {
-            setInitComplete(true);
-        }
-    }, [height]);
-
-    useEffect(() => {
-        if (!initComplete) return;
+        if (Object.keys(style).length === 0) return;
 
         let scene, camera, renderer, faceMeshes, updateRotationSpeed;
         let onMouseMove, onMouseDown, onMouseUp, onMouseClick;
@@ -75,12 +75,12 @@ const ThreeScene = () => {
             window.removeEventListener('click', onMouseClick);
             window.removeEventListener('resize', handleResize);
         };
-    }, [initComplete, navigate]);
+    }, [style, navigate]);
 
     return (
         <div
             ref={mountRef}
-            style={{ position: 'absolute', top: 0, left: 0, width: '100vw', height: height }}
+            style={style}
         />
     );
 };

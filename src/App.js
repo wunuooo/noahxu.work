@@ -17,6 +17,8 @@ import CustomCursor from "./utils/CustomMouse";
 import { ModelLoadingState } from './utils/ModelLoadingState';
 import useMediaQuery from './hooks/useMediaQuery';
 
+
+
 // 处理路由变化和模型加载状态
 const AppContent = () => {
   const location = useLocation();
@@ -49,10 +51,10 @@ const AppContent = () => {
   return (
     <ReactLenis root options={lenisOptions}>
       {showLoader && <Loader onLoadComplete={() => setShowLoader(false)} />}
-      <div className="flex flex-col">
+      <div className="flex flex-col text-black dark:text-white">
         {isDesktop && <CustomCursor />}
         <Navbar />
-        <main>
+        <main className={`${location.pathname !== '/' ? 'px-4 pt-24' : ''}`}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/works" element={<Works />} />

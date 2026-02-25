@@ -1,6 +1,5 @@
 // src/utils/SceneAnimator.js
 
-import React, { useEffect, useRef } from 'react';
 import { RADIUS } from './GeometryCreator';
 import { CAMERAHEIGHT } from './CameraControler'
 import { modelStore } from './ModelStore';

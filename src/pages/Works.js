@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import TabPage from '../components/TabPage';
 import { useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import { WorkData } from '../data/WorkData'; // 导入共享的工作数据
 
 const Works = () => {

@@ -160,13 +160,11 @@ import { BlogData } from '../data/BlogData';
 
 const Blog = () => {
     const [blogData, setBlogData] = useState([]);
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const loadBlogs = async () => {
             const data = await BlogData();
             setBlogData(data);
-            setLoading(false);
         };
         loadBlogs();
     }, []);

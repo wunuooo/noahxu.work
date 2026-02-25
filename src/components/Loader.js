@@ -3,7 +3,10 @@ import Lottie from 'lottie-web';
 import React, { useEffect, useState } from 'react'; // Re-import useState
 import { ModelLoadingState } from '../utils/ModelLoadingState';
 
+import { useTranslation } from 'react-i18next';
+
 const Loader = ({ onLoadComplete }) => {
+    const { t } = useTranslation();
     const animationData = '/assets/svg/loader.json';
     const [hasCompletedOneCycle, setHasCompletedOneCycle] = useState(false); // State lock
 
@@ -83,7 +86,7 @@ const Loader = ({ onLoadComplete }) => {
                 fontWeight: 'bold',
                 marginTop: '20px'
             }}>
-                加载中...
+                {t('loader.loading')}
             </p>
         </div>
     );

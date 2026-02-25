@@ -20,7 +20,7 @@ const ThreeScene = () => {
             position: 'fixed',
             top: `${navbarHeight}px`,
             left: 0,
-            width: '100vw',
+            width: '100%',
             height: newHeight,
             zIndex: -1
         });

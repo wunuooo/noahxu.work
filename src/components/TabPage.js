@@ -30,7 +30,7 @@ const TabPage = ({ category, data, activeCategory }) => {
 
     return (
         <div className="container mx-auto my-8 p-4 main_content">
-            <div className="flex border-b mb-4">
+            <div className="flex border-b mb-4 overflow-x-auto whitespace-nowrap">
                 {Object.keys(data).map(tab => (
                     <button
                         key={tab}

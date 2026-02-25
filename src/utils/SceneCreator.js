@@ -8,7 +8,7 @@ import { ModelLoadingState } from './ModelLoadingState';
 export const createScene = (mountElement, navigate) => {
     // 创建场景
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xffffff);
+    scene.background = null;
     // scene.background = null;
 
 
@@ -33,13 +33,13 @@ export const createScene = (mountElement, navigate) => {
 
     const initializeScene = async () => {
         try {
-            document.body.style.overflow = 'hidden';
+            // document.body.style.overflow = 'hidden';
 
             const centerPotato = await createPotato(true);
             scene.add(centerPotato);
             modelStore.setPotato(centerPotato);
 
-            document.body.style.overflow = 'auto';
+            // document.body.style.overflow = 'auto';
             ModelLoadingState.setLoadingState(true);
         } catch (error) {
             console.error('模型加载失败:', error);

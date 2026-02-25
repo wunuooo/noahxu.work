@@ -1,0 +1,35 @@
+{
+  "nav": {
+    "home": "Home",
+    "works": "Works",
+    "portfolio": "Portfolio",
+    "blog": "Blog",
+    "contact": "Find Me!"
+  },
+  "home": {
+    "greeting": "Hello ;-) I'm Nuo",
+    "welcome": "Welcome to my personal homepage",
+    "intro1": "I am an architecture student, sometimes doing more than just architectural design.",
+    "intro2": "Here are some of the projects I have worked on, and I am currently adding and improving the information.",
+    "intro3": "Feel free to supervise my progress, or visit my blog :)",
+    "scroll1_title": "I've studied some architectural design and occasionally do simple development.",
+    "scroll1_subtitle": "Probably out of interest.",
+    "scroll1_desc": "Scroll down to browse some of my previous work and click to view the details.",
+    "scroll2_title": "The above is some basic information.",
+    "scroll2_subtitle": "More details can be viewed by entering the corresponding pages.",
+    "scroll2_desc": "Welcome again next time!",
+    "mobile_greeting": "Hello, I'm Nuo",
+    "mobile_welcome": "Welcome to my personal homepage",
+    "mobile_intro": "I am an architecture student, sometimes doing more than just architectural design. Here are some of the projects I have worked on, and I am currently adding and improving the information.",
+    "mobile_about_me": "About Me",
+    "mobile_about_me_desc": "I've studied some architectural design and occasionally do simple development, probably out of interest. Scroll down to browse some of my previous work and click to view the details.",
+    "mobile_about_site": "About This Site",
+    "mobile_site_info_1": "The site is divided into six sections, with content to be updated and supplemented.",
+    "mobile_site_info_2": "If the background scene blocks images or affects reading, you can refresh the page to reload (the potato positions are random). The model positions should be fixed later based on text and image locations.",
+    "mobile_finally": "Finally",
+    "mobile_finally_desc": "For more details, click the navigation bar to enter different sections. Welcome again next time!"
+  },
+  "loader": {
+    "loading": "Loading..."
+  }
+}

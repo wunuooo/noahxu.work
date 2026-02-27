@@ -1,16 +1,19 @@
 // src/components/WorkDetail.js
 
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { WorkData } from '../data/WorkData';
-import { ChevronLeft, ChevronRight, X, Maximize2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, Maximize2, ArrowLeft } from 'lucide-react';
 import GameViewer from '../components/GameViewer';
 
 const WorkDetail = () => {
     const { category, id } = useParams();
     const work = WorkData[category]?.find(item => item.id === id);
+    const navigate = useNavigate();
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const thumbnailContainerRef = React.useRef(null);
+    const [thumbnailScroll, setThumbnailScroll] = useState(0);
 
     const isGameDev = category === 'gamedev';
 
@@ -48,8 +51,13 @@ const WorkDetail = () => {
                     <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
                         {/* 左：项目信息 */}
                         <div className="w-full md:w-1/2 space-y-4">
-                            <h1 className="text-2xl md:text-3xl font-bold">{work.title}</h1>
-                            <p className="text-base md:text-lg text-gray-700">{details.description}</p>
+                            <div className="flex items-center gap-4">
+                                <button onClick={() => navigate(-1)} className="p-2 rounded-full hover:bg-gray-200 transition-colors">
+                                    <ArrowLeft size={24} />
+                                </button>
+                                <h1 className="text-2xl md:text-3xl font-bold">{work.title}</h1>
+                            </div>
+                            <p className="text-base md:text-lg text-gray-700" dangerouslySetInnerHTML={{ __html: details.description }}></p>
                             <div className="space-y-2 text-sm md:text-base">
                                 <p><strong>日期:</strong> {details.date}</p>
                                 <p><strong>项目类型:</strong> {details.projectType}</p>
@@ -83,23 +91,30 @@ const WorkDetail = () => {
 
                 </div>
             ) : (
-                // 非 gamedev：图文混排
-                <div className="container mx-auto my-8 p-4 main_content flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
+                // 非 gamedev：图文混排 - 固定布局
+                <div className="container mx-auto h-[calc(100vh-8rem)] p-4 flex flex-col md:flex-row gap-8 items-center">
                     {/* 左侧文字内容 */}
-                    <div className="w-full md:w-1/2 space-y-4">
-                        <h1 className="text-2xl md:text-3xl font-bold">{work.title}</h1>
-                        <p className="text-base md:text-lg text-gray-700">{details.description}</p>
+                    <div className="w-full md:w-1/2 h-full flex flex-col space-y-4">
+                        <div className="flex items-center gap-4 flex-shrink-0">
+                            <button onClick={() => navigate(-1)} className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                <ArrowLeft size={24} />
+                            </button>
+                            <h1 className="text-2xl md:text-3xl font-bold truncate">{work.title}</h1>
+                        </div>
 
-                        <div className="space-y-2 text-sm md:text-base">
+                        <div className="space-y-2 text-sm md:text-base flex-shrink-0">
                             <p><strong>日期:</strong> {details.date}</p>
                             <p><strong>项目类型:</strong> {details.projectType}</p>
                             <p><strong>参与人员:</strong> {details.participants.join(', ')}</p>
                         </div>
+
+                        <p className="text-base md:text-lg text-gray-700 dark:text-gray-300 overflow-y-auto flex-grow" dangerouslySetInnerHTML={{ __html: details.description }}></p>
                     </div>
 
                     {/* 右侧图片展示区 */}
-                    <div className="w-full md:w-1/2 flex flex-col items-center">
-                        <div className="relative w-full h-[50vh] md:h-[70vh] bg-gray-200 rounded-lg shadow-lg mb-4 flex items-center justify-center">
+                    <div className="w-full md:w-1/2 h-full flex flex-col items-center gap-4">
+                        {/* 主图片 */}
+                        <div className="relative w-full h-[600px] bg-gray-200 dark:bg-gray-800 rounded-lg shadow-lg flex items-center justify-center">
                             <img
                                 src={images[currentImageIndex]}
                                 alt={`${work.title} - 图片 ${currentImageIndex + 1}`}
@@ -108,7 +123,7 @@ const WorkDetail = () => {
                             />
                             <button
                                 onClick={openModal}
-                                className="absolute top-2 right-2 bg-white/50 rounded-full p-2 hover:bg-white/75 transition"
+                                className="absolute top-2 right-2 bg-white/50 dark:bg-black/50 rounded-full p-2 hover:bg-white/75 dark:hover:bg-black/75 transition"
                             >
                                 <Maximize2 size={20} />
                             </button>
@@ -116,13 +131,13 @@ const WorkDetail = () => {
                                 <>
                                     <button
                                         onClick={handlePrevImage}
-                                        className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/50 rounded-full p-2 hover:bg-white/75 transition"
+                                        className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/50 dark:bg-black/50 rounded-full p-2 hover:bg-white/75 dark:hover:bg-black/75 transition"
                                     >
                                         <ChevronLeft />
                                     </button>
                                     <button
                                         onClick={handleNextImage}
-                                        className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/50 rounded-full p-2 hover:bg-white/75 transition"
+                                        className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/50 dark:bg-black/50 rounded-full p-2 hover:bg-white/75 dark:hover:bg-black/75 transition"
                                     >
                                         <ChevronRight />
                                     </button>
@@ -130,21 +145,25 @@ const WorkDetail = () => {
                             )}
                         </div>
 
-                        {/* 缩略图预览 */}
+                        {/* 缩略图传送带 */}
                         {images.length > 1 && (
-                            <div className="flex space-x-2 justify-center flex-wrap">
-                                {images.map((img, index) => (
-                                    <img
-                                        key={index}
-                                        src={img}
-                                        alt={`缩略图 ${index + 1}`}
-                                        className={`w-12 h-12 md:w-16 md:h-16 object-cover rounded-md cursor-pointer m-1 ${index === currentImageIndex
-                                            ? 'border-2 border-black'
-                                            : 'opacity-50 hover:opacity-100'
-                                            }`}
-                                        onClick={() => setCurrentImageIndex(index)}
-                                    />
-                                ))}
+                            <div className="w-full flex-shrink-0 relative flex items-center">
+                                <button className="absolute left-0 z-10 p-1 bg-white/50 dark:bg-black/50 rounded-full hover:bg-white/75 dark:hover:bg-black/75 transition-opacity" onClick={() => { thumbnailContainerRef.current.scrollBy({ left: -300, behavior: 'smooth' }); }}><ChevronLeft/></button>
+                                <div ref={thumbnailContainerRef} className="flex items-center justify-center gap-2 overflow-x-auto scrollbar-hide w-full">
+                                    {images.map((img, index) => (
+                                        <img
+                                            key={index}
+                                            src={img}
+                                            alt={`缩略图 ${index + 1}`}
+                                            className={`w-16 h-16 object-cover rounded-md cursor-pointer flex-shrink-0 ${index === currentImageIndex
+                                                ? 'border-2 border-black dark:border-white'
+                                                : 'opacity-50 hover:opacity-100'
+                                                }`}
+                                            onClick={() => setCurrentImageIndex(index)}
+                                        />
+                                    ))}
+                                </div>
+                                <button className="absolute right-0 z-10 p-1 bg-white/50 dark:bg-black/50 rounded-full hover:bg-white/75 dark:hover:bg-black/75 transition-opacity" onClick={() => { thumbnailContainerRef.current.scrollBy({ left: 300, behavior: 'smooth' }); }}><ChevronRight/></button>
                             </div>
                         )}
                     </div>
@@ -152,7 +171,8 @@ const WorkDetail = () => {
             )}
 
             {/* 图片模态框 */}
-            {isModalOpen && (             <div
+            {isModalOpen && (
+                <div
                     className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
                     onClick={closeModal}
                 >
@@ -169,9 +189,26 @@ const WorkDetail = () => {
                         <img
                             src={images[currentImageIndex]}
                             alt={`${work.title} - 大图 ${currentImageIndex + 1}`}
-                            className="max-w-full max-h-[90vh] object-contain"
+                            className="max-w-full max-h-[80vh] object-contain"
                         />
                     </div>
+
+                    {images.length > 1 && (
+                        <>
+                            <button
+                                onClick={(e) => { e.stopPropagation(); handlePrevImage(); }}
+                                className="absolute left-4 top-1/2 -translate-y-1/2 text-white bg-black/30 rounded-full p-2 hover:bg-black/50 transition"
+                            >
+                                <ChevronLeft size={32} />
+                            </button>
+                            <button
+                                onClick={(e) => { e.stopPropagation(); handleNextImage(); }}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-white bg-black/30 rounded-full p-2 hover:bg-black/50 transition"
+                            >
+                                <ChevronRight size={32} />
+                            </button>
+                        </>
+                    )}
                 </div>
             )}
         </>

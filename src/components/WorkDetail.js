@@ -147,9 +147,8 @@ const WorkDetail = () => {
 
                         {/* 缩略图传送带 */}
                         {images.length > 1 && (
-                            <div className="w-full flex-shrink-0 relative flex items-center">
-                                <button className="absolute left-0 z-10 p-1 bg-white/50 dark:bg-black/50 rounded-full hover:bg-white/75 dark:hover:bg-black/75 transition-opacity" onClick={() => { thumbnailContainerRef.current.scrollBy({ left: -300, behavior: 'smooth' }); }}><ChevronLeft/></button>
-                                <div ref={thumbnailContainerRef} className="flex items-center justify-center gap-2 overflow-x-auto scrollbar-hide w-full">
+                            <div className="w-full flex-shrink-0">
+                                <div className="flex items-center gap-2 overflow-x-auto w-full">
                                     {images.map((img, index) => (
                                         <img
                                             key={index}
@@ -163,7 +162,6 @@ const WorkDetail = () => {
                                         />
                                     ))}
                                 </div>
-                                <button className="absolute right-0 z-10 p-1 bg-white/50 dark:bg-black/50 rounded-full hover:bg-white/75 dark:hover:bg-black/75 transition-opacity" onClick={() => { thumbnailContainerRef.current.scrollBy({ left: 300, behavior: 'smooth' }); }}><ChevronRight/></button>
                             </div>
                         )}
                     </div>

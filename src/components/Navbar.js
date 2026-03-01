@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Languages, Moon, Menu, X } from 'lucide-react';
 import throttle from 'lodash.throttle';
@@ -13,10 +13,12 @@ const mobileNavLinkClasses = "text-white text-3xl";
 
 const Navbar = () => {
     const { t, i18n } = useTranslation();
-    const { toggleTheme } = React.useContext(ThemeContext);
+    const { theme, toggleTheme } = React.useContext(ThemeContext);
     const location = useLocation();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+
+    const iconSrc = theme === 'dark' ? '/assets/images/navbar/iconw.png' : '/assets/images/navbar/iconb.png';
 
     // --- Optimized Scroll Handler ---
     useEffect(() => {
@@ -31,10 +33,10 @@ const Navbar = () => {
         };
     }, []);
 
-    const handleLanguageChange = () => {
-        const newLang = i18n.language === 'zh' ? 'en' : 'zh';
+    const handleLanguageChange = useCallback(() => {
+        const newLang = i18n.language.startsWith('zh') ? 'en' : 'zh';
         i18n.changeLanguage(newLang);
-    };
+    }, [i18n]);
 
     // --- Unified Navigation Items ---
     const navItems = useMemo(() => [
@@ -46,7 +48,7 @@ const Navbar = () => {
         { type: 'separator' },
         { type: 'button', icon: Languages, onClick: handleLanguageChange },
         { type: 'button', icon: Moon, onClick: toggleTheme },
-    ], [t, handleLanguageChange]);
+    ], [t, handleLanguageChange, toggleTheme]);
 
     // --- Renderer for a single navigation item ---
     const renderNavItem = (item, isMobile = false) => {
@@ -96,14 +98,14 @@ const Navbar = () => {
                         <div className={`absolute top-1/2 -translate-y-1/2 left-10 transition-transform duration-500 ease-in-out z-10
                             ${isScrolled ? 'translate-x-[calc(50vw-100%-14rem)]' : 'translate-x-0'}`}>
                             <Link to="/">
-                                <img src="/icon.png" alt="网站图标" className={`transition-all duration-300 ${!isScrolled ? 'w-16' : 'w-9'}`} />
+                                <img src={iconSrc} alt="网站图标" className={`transition-all duration-300 ${!isScrolled ? 'w-16' : 'w-9'}`} />
                             </Link>
                         </div>
 
                         {/* Desktop Nav */}
                         <nav className={`flex items-center absolute top-1/2 -translate-y-1/2 right-14 transition-transform duration-500 ease-in-out z-0
                             ${isScrolled ? 'translate-x-[calc(-50vw+100%-11.5rem)]' : 'translate-x-0'}`}>
-                            <ul className={`flex items-center space-x-3 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-sm shadow-lg rounded-full pl-20 pr-6 py-2' : ''}`}>
+                            <ul className={`flex items-center space-x-3 transition-all duration-300 ${isScrolled ? 'bg-white/90 dark:bg-black/80 backdrop-blur-sm shadow-lg dark:shadow-white/25 rounded-full pl-20 pr-6 py-2' : ''}`}>
                                 {navItems.map(item => renderNavItem(item))}
                             </ul>
                         </nav>
@@ -112,9 +114,9 @@ const Navbar = () => {
                     {/* Mobile: Static Logo and Hamburger */}
                     <div className="md:hidden flex justify-between items-center w-full h-full">
                         <Link to="/">
-                            <img src="/icon.png" alt="网站图标" className="w-16" />
+                            <img src={iconSrc} alt="网站图标" className="w-16" />
                         </Link>
-                        <button onClick={() => setIsMenuOpen(true)} className="p-2">
+                        <button onClick={() => setIsMenuOpen(true)} className="p-2 text-black dark:text-white">
                             <Menu size={32} />
                         </button>
                     </div>

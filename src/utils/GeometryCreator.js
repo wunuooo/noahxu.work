@@ -16,12 +16,12 @@ export const createRoundedRectangle = () => {
     THREE.ColorManagement.enabled = true;  // 使用 color management
 
     const images = [
-        { path: '/assets/pics/others.jpg', route: '/works/others' },
-        { path: '/assets/pics/architecture.jpg', route: '/works/architecture' },
-        { path: '/assets/pics/craft.jpg', route: '/works/craft' },
-        { path: '/assets/pics/gamedev.jpg', route: '/works/gamedev' },
-        { path: '/assets/pics/photo.jpg', route: '/works/photo' },
-        { path: '/assets/pics/tool.jpg', route: '/works/tool' },
+        { path: '/assets/images/home/others.jpg', route: '/works/others' },
+        { path: '/assets/images/home/architecture.jpg', route: '/works/architecture' },
+        { path: '/assets/images/home/craft.jpg', route: '/works/craft' },
+        { path: '/assets/images/home/gamedev.jpg', route: '/works/gamedev' },
+        { path: '/assets/images/home/photo.jpg', route: '/works/photo' },
+        { path: '/assets/images/home/tool.jpg', route: '/works/tool' },
     ];
 
     const objects = images.map(img => {

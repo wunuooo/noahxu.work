@@ -80,7 +80,7 @@ const LottieAnimator = ({
 
     }, [animationData, animationMode]);
 
-    return <div ref={animationContainer} style={{ width: '100%', height: '100%' }} />;
+    return <div ref={animationContainer} className="lottie-color-swap" style={{ width: '100%', height: '100%' }} />;
 };
 
 export default LottieAnimator;

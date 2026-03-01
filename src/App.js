@@ -67,7 +67,7 @@ const AppContent = () => {
             <Route path="*" element={<Home />} />
           </Routes>
         </main>
-        <Footer />
+        {location.pathname === '/' && <Footer />}
       </div>
     </ReactLenis>
   );

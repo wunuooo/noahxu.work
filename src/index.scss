@@ -83,3 +83,7 @@ body {
 // body {
 //   font-family: 'OPPOSans-R', sans-serif;
 // }
+
+.dark .lottie-color-swap svg {
+  filter: invert(1) grayscale(1) brightness(1.5);
+}

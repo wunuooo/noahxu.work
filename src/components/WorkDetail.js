@@ -1,6 +1,6 @@
 // src/components/WorkDetail.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { WorkData } from '../data/WorkData';
 import { ChevronLeft, ChevronRight, X, Maximize2, ArrowLeft } from 'lucide-react';
@@ -12,26 +12,49 @@ const WorkDetail = () => {
     const navigate = useNavigate();
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [imageManifest, setImageManifest] = useState(null);
     const gameContainerRef = React.useRef(null);
 
+    useEffect(() => {
+        // Fetch the generated image manifest
+        fetch('/assets/images/works/manifest.json')
+            .then(response => response.json())
+            .then(data => setImageManifest(data))
+            .catch(error => console.error('Error fetching image manifest:', error));
+    }, []);
+
     const isGameDev = category === 'gamedev';
+
+    // Dynamically generate image paths once the manifest is loaded
+    const detailImages = useMemo(() => {
+        if (!imageManifest || !category || !id) return [];
+
+        const manifestKey = `${category}/${id}`;
+        const imageFileNames = imageManifest[manifestKey] || [];
+        
+        return imageFileNames.map(fileName => 
+            `/assets/images/works/${category}/${id}/${fileName}`
+        );
+    }, [imageManifest, category, id]);
+
+    const allImages = useMemo(() => [work?.thumbnail, ...detailImages].filter(Boolean), [work, detailImages]);
 
     if (!work) {
         return <div>未找到该项目</div>;
     }
 
     const details = work.fullDetails;
-    const images = [work.thumbnail, ...(details.images || [])];
+    // const images = [work.thumbnail, ...(details.images || [])]; // This line is now replaced by allImages
 
     const handleNextImage = () => {
         setCurrentImageIndex((prevIndex) =>
-            (prevIndex + 1) % images.length
+            (prevIndex + 1) % allImages.length
         );
     };
 
     const handlePrevImage = () => {
         setCurrentImageIndex((prevIndex) =>
-            (prevIndex - 1 + images.length) % images.length
+            (prevIndex - 1 + allImages.length) % allImages.length
         );
     };
 
@@ -69,11 +92,11 @@ const WorkDetail = () => {
                         </div>
 
                         {/* Thumbnails below text */}
-                        {details.images && details.images.length > 0 && (
+                        {detailImages.length > 0 && (
                             <div className="w-full pt-4 mt-4 border-t border-gray-200 dark:border-gray-700">
                                 <h3 className="text-lg font-semibold mb-2">图片预览</h3>
                                 <div className="flex flex-wrap justify-start gap-2">
-                                    {images.map((img, index) => (
+                                    {allImages.map((img, index) => (
                                         <img
                                             key={index}
                                             src={img}
@@ -94,7 +117,7 @@ const WorkDetail = () => {
                     </div>
 
                     {/* Right: Game Viewer */}
-                    <div className="w-full md:w-1/2 relative">
+                    <div className="w-full md:w-4/5 relative">
                         <div
                             ref={gameContainerRef}
                             className="w-full aspect-video bg-black rounded-lg shadow-lg overflow-hidden fullscreen:bg-black fullscreen:flex fullscreen:justify-center fullscreen:items-center"
@@ -105,7 +128,7 @@ const WorkDetail = () => {
                         </div>
                         <button
                             onClick={handleFullscreen}
-                            className="absolute top-2 right-2 bg-white/50 dark:bg-black/50 rounded-full p-2 hover:bg-white/75 dark:hover:bg-black/75 transition"
+                            className="absolute top-2 right-2 bg-white/80 dark:bg-black/80 rounded-full p-2 hover:bg-white/100 dark:hover:bg-black/100 transition"
                             aria-label="全屏"
                         >
                             <Maximize2 size={20} />
@@ -136,9 +159,9 @@ const WorkDetail = () => {
                     {/* 右侧图片展示区 */}
                     <div className="w-full md:w-1/2 h-full flex flex-col items-center gap-4">
                         {/* 主图片 */}
-                        <div className="relative w-full h-[600px] bg-gray-200 dark:bg-gray-800 rounded-lg shadow-lg flex items-center justify-center">
+                        <div className="relative w-full h-[600px] bg-gray-100 dark:bg-gray-900 rounded-lg shadow-lg flex items-center justify-center">
                             <img
-                                src={images[currentImageIndex]}
+                                src={allImages[currentImageIndex]}
                                 alt={`${work.title} - 图片 ${currentImageIndex + 1}`}
                                 className="max-w-full max-h-full object-contain cursor-pointer"
                                 onClick={openModal}
@@ -149,7 +172,7 @@ const WorkDetail = () => {
                             >
                                 <Maximize2 size={20} />
                             </button>
-                            {images.length > 1 && (
+                            {allImages.length > 1 && (
                                 <>
                                     <button
                                         onClick={handlePrevImage}
@@ -168,10 +191,10 @@ const WorkDetail = () => {
                         </div>
 
                         {/* 缩略图传送带 */}
-                        {images.length > 1 && (
+                        {allImages.length > 1 && (
                             <div className="w-full flex-shrink-0">
                                 <div className="flex items-center gap-2 overflow-x-auto w-full">
-                                    {images.map((img, index) => (
+                                    {allImages.map((img, index) => (
                                         <img
                                             key={index}
                                             src={img}
@@ -207,13 +230,13 @@ const WorkDetail = () => {
                             <X size={30} />
                         </button>
                         <img
-                            src={images[currentImageIndex]}
+                            src={allImages[currentImageIndex]}
                             alt={`${work.title} - 大图 ${currentImageIndex + 1}`}
                             className="max-w-full max-h-[80vh] object-contain"
                         />
                     </div>
 
-                    {images.length > 1 && (
+                    {allImages.length > 1 && (
                         <>
                             <button
                                 onClick={(e) => { e.stopPropagation(); handlePrevImage(); }}

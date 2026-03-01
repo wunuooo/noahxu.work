@@ -12,8 +12,7 @@ const WorkDetail = () => {
     const navigate = useNavigate();
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const thumbnailContainerRef = React.useRef(null);
-    const [thumbnailScroll, setThumbnailScroll] = useState(0);
+    const gameContainerRef = React.useRef(null);
 
     const isGameDev = category === 'gamedev';
 
@@ -39,25 +38,29 @@ const WorkDetail = () => {
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
+    const handleFullscreen = () => {
+        if (gameContainerRef.current) {
+            gameContainerRef.current.requestFullscreen().catch(err => {
+                alert(`无法进入全屏模式: ${err.message}`);
+            });
+        }
+    };
+
     return (
         <>
             {isGameDev ? (
-                // gamedev：Unity游戏展示 + 文字描述
-                <div className="container mx-auto my-8 p-4 flex flex-col space-y-8">
-                    {/* Unity WebGL 游戏 */}
-                    <GameViewer buildPath={details.buildPath} />
-
-                    {/* 文字 + 缩略图横向排布 */}
-                    <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
-                        {/* 左：项目信息 */}
-                        <div className="w-full md:w-1/2 space-y-4">
+                // gamedev: Text on left, game on right
+                <div className="container mx-auto my-8 p-4 flex flex-col md:flex-row gap-8">
+                    {/* Left: Text Content + Thumbnails */}
+                    <div className="w-full md:w-1/2 flex flex-col">
+                        <div className="space-y-4 flex-grow">
                             <div className="flex items-center gap-4">
-                                <button onClick={() => navigate(-1)} className="p-2 rounded-full hover:bg-gray-200 transition-colors">
+                                <button onClick={() => navigate(-1)} className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
                                     <ArrowLeft size={24} />
                                 </button>
                                 <h1 className="text-2xl md:text-3xl font-bold">{work.title}</h1>
                             </div>
-                            <p className="text-base md:text-lg text-gray-700" dangerouslySetInnerHTML={{ __html: details.description }}></p>
+                            <p className="text-base md:text-lg text-gray-700 dark:text-gray-300" dangerouslySetInnerHTML={{ __html: details.description }}></p>
                             <div className="space-y-2 text-sm md:text-base">
                                 <p><strong>日期:</strong> {details.date}</p>
                                 <p><strong>项目类型:</strong> {details.projectType}</p>
@@ -65,18 +68,19 @@ const WorkDetail = () => {
                             </div>
                         </div>
 
-                        {/* 右：缩略图 */}
+                        {/* Thumbnails below text */}
                         {details.images && details.images.length > 0 && (
-                            <div className="w-full md:w-1/2 flex flex-wrap items-start justify-center">
-                                <div className="flex flex-wrap justify-center gap-2">
+                            <div className="w-full pt-4 mt-4 border-t border-gray-200 dark:border-gray-700">
+                                <h3 className="text-lg font-semibold mb-2">图片预览</h3>
+                                <div className="flex flex-wrap justify-start gap-2">
                                     {images.map((img, index) => (
                                         <img
                                             key={index}
                                             src={img}
                                             alt={`缩略图 ${index + 1}`}
-                                            className={`w-16 h-16 md:w-20 md:h-20 object-cover rounded-md cursor-pointer border ${index === currentImageIndex
-                                                ? 'border-black'
-                                                : 'opacity-50 hover:opacity-100 border-transparent'
+                                            className={`w-16 h-16 object-cover rounded-md cursor-pointer border-2 ${index === currentImageIndex
+                                                ? 'border-black dark:border-white'
+                                                : 'border-transparent opacity-60 hover:opacity-100'
                                                 }`}
                                             onClick={() => {
                                                 setCurrentImageIndex(index);
@@ -89,6 +93,24 @@ const WorkDetail = () => {
                         )}
                     </div>
 
+                    {/* Right: Game Viewer */}
+                    <div className="w-full md:w-1/2 relative">
+                        <div
+                            ref={gameContainerRef}
+                            className="w-full aspect-video bg-black rounded-lg shadow-lg overflow-hidden fullscreen:bg-black fullscreen:flex fullscreen:justify-center fullscreen:items-center"
+                        >
+                            <div className="w-full h-full fullscreen:w-auto fullscreen:h-full fullscreen:aspect-video">
+                                <GameViewer buildPath={details.buildPath} />
+                            </div>
+                        </div>
+                        <button
+                            onClick={handleFullscreen}
+                            className="absolute top-2 right-2 bg-white/50 dark:bg-black/50 rounded-full p-2 hover:bg-white/75 dark:hover:bg-black/75 transition"
+                            aria-label="全屏"
+                        >
+                            <Maximize2 size={20} />
+                        </button>
+                    </div>
                 </div>
             ) : (
                 // 非 gamedev：图文混排 - 固定布局

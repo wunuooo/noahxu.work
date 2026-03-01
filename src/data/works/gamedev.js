@@ -20,9 +20,26 @@ export const gamedev = {
             }
         },
         {
+            id: 'GuaGuaLue',
+            title: '呱呱略',
+            shortDescription: '（待补充）',
+            thumbnail: '/assets/images/works/gamedev/GuaGuaLue.png',
+            fullDetails: {
+                description: '（待补充）',
+                date: '（待补充）',
+                projectType: '游戏设计',
+                participants: ['Nuo'],
+                buildPath: '/assets/games/GuaGuaLue',
+                images: [
+                    '/assets/images/works/gamedev/GuaGuaLue/detail1.jpg',
+                ]
+            }
+        },
+
+        {
             id: 'ChamaAbacus',
             title: 'ChamaAbacus',
-            shortDescription: '鼠标控制吸管，键盘S&B控制吸气&吐气，在奶茶喝完之前把小料都吸上来吧！',
+            shortDescription: '茶马古道发生了什么？好像和算盘有点关系......',
             thumbnail: '/assets/images/works/gamedev/ChamaAbacus.jpg',
             fullDetails: {
                 description: '（待补充）',
@@ -39,7 +56,7 @@ export const gamedev = {
         {
             id: 'WarriorLegend',
             title: 'WarriorLegend',
-            shortDescription: '鼠标控制吸管，键盘S&B控制吸气&吐气，在奶茶喝完之前把小料都吸上来吧！',
+            shortDescription: '一个简单的Unity初尝试。',
             thumbnail: '/assets/images/works/gamedev/WarriorLegend.jpg',
             fullDetails: {
                 description: '（待补充）',

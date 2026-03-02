@@ -161,14 +161,12 @@ import BlogTimeline from '../components/BlogTimeline'; // Import the new compone
 
 const Blog = () => {
     const [blogData, setBlogData] = useState([]);
-    const [loading, setLoading] = useState(true);
     const postRefs = useRef({});
 
     useEffect(() => {
         const loadBlogs = async () => {
             const data = await BlogData();
             setBlogData(data);
-            setLoading(false);
             // Initialize refs for each post
             data.forEach(post => {
                 postRefs.current[post.date] = React.createRef();

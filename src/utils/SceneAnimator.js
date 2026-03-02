@@ -4,7 +4,7 @@ import { RADIUS } from './GeometryCreator';
 import { CAMERAHEIGHT } from './CameraControler'
 import { modelStore } from './ModelStore';
 import { ModelLoadingState } from './ModelLoadingState';
-import * as THREE from 'three';
+
 
 export const animateScene = (renderer, scene, camera, faceMeshes) => {
     let angleOffset = 0;
@@ -13,7 +13,6 @@ export const animateScene = (renderer, scene, camera, faceMeshes) => {
     let centerPotato;
     const ROTATION_DAMPING_FACTOR = 0.85;
     const ROTATION_SPEED_FACTOR = 0.02;
-    const HEIGHT_LERP_FACTOR = 0.2; // 控制高度平滑过渡的速度
     const SCALE_LERP_FACTOR = 0.2;  // 控制缩放平滑过渡的速度
 
     // 初始化订阅

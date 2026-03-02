@@ -38,9 +38,9 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="next-page container mx-auto flex flex-col justify-center items-center text-center w-full h-full">
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-9">{t('home.scroll2_title')}</h1>
-                    <h2 className="text-xl md:text-2xl font-bold mb-3">{t('home.scroll2_subtitle')}</h2>
-                    <p className="text-base md:text-lg mt-8">{t('home.scroll2_desc')}</p>
+                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-9">{t('home.scroll3_title')}</h1>
+                    <h2 className="text-xl md:text-2xl font-bold mb-3">{t('home.scroll3_subtitle')}</h2>
+                    <p className="text-base md:text-lg mt-8">{t('home.scroll3_desc')}</p>
                 </div>
             </div>
         </>

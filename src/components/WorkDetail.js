@@ -13,15 +13,27 @@ const WorkDetail = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [imageManifest, setImageManifest] = useState(null);
+    const [thumbnailUrl, setThumbnailUrl] = useState('');
     const gameContainerRef = React.useRef(null);
 
     useEffect(() => {
         // Fetch the generated image manifest
         fetch('/assets/images/works/manifest.json')
             .then(response => response.json())
-            .then(data => setImageManifest(data))
+            .then(data => {
+                setImageManifest(data);
+
+                // Also set the thumbnail for gamedev projects
+                if (category === 'gamedev') {
+                    const manifestKey = `gamedev/${id}`;
+                    const imageFileNames = data[manifestKey] || [];
+                    if (imageFileNames.length > 0) {
+                        setThumbnailUrl(`/assets/images/works/gamedev/${id}/${imageFileNames[0]}`);
+                    }
+                }
+            })
             .catch(error => console.error('Error fetching image manifest:', error));
-    }, []);
+    }, [category, id]);
 
     const isGameDev = category === 'gamedev';
 
@@ -83,11 +95,19 @@ const WorkDetail = () => {
                                 </button>
                                 <h1 className="text-2xl md:text-3xl font-bold">{work.title}</h1>
                             </div>
-                            <p className="text-base md:text-lg text-gray-700 dark:text-gray-300" dangerouslySetInnerHTML={{ __html: details.description }}></p>
+                            <p className="text-base md:text-lg text-gray-700 dark:text-gray-300" dangerouslySetInnerHTML={{ __html: details.description }} />
                             <div className="space-y-2 text-sm md:text-base">
                                 <p><strong>日期:</strong> {details.date}</p>
                                 <p><strong>项目类型:</strong> {details.projectType}</p>
-                                <p><strong>参与人员:</strong> {details.participants.join(', ')}</p>
+                                <p><strong>参与人员:</strong> {details.participants}</p>
+                                {details.link && (
+                                    <p>
+                                        <strong>源码链接:</strong> 
+                                        <a href={details.link} target="_blank" rel="noopener noreferrer" className="text-gray-800 dark:text-gray-200 hover:underline">
+                                            {details.link}
+                                        </a>
+                                    </p>
+                                )}
                             </div>
                         </div>
 
@@ -123,7 +143,7 @@ const WorkDetail = () => {
                             className="w-full aspect-video bg-black rounded-lg shadow-lg overflow-hidden fullscreen:bg-black fullscreen:flex fullscreen:justify-center fullscreen:items-center"
                         >
                             <div className="w-full h-full fullscreen:w-auto fullscreen:h-full fullscreen:aspect-video">
-                                <GameViewer buildPath={details.buildPath} />
+                                <GameViewer buildPath={details.buildPath} thumbnailUrl={thumbnailUrl} />
                             </div>
                         </div>
                         <button
@@ -147,13 +167,20 @@ const WorkDetail = () => {
                             <h1 className="text-2xl md:text-3xl font-bold truncate">{work.title}</h1>
                         </div>
 
-                        <div className="space-y-2 text-sm md:text-base flex-shrink-0">
+                        <div className="space-y-2 text-sm md:text-base flex-shrink-0 overflow-y-auto flex-grow">
+                            <div className="text-base md:text-lg text-gray-700 dark:text-gray-300" dangerouslySetInnerHTML={{ __html: details.description }} />
                             <p><strong>日期:</strong> {details.date}</p>
                             <p><strong>项目类型:</strong> {details.projectType}</p>
-                            <p><strong>参与人员:</strong> {details.participants.join(', ')}</p>
+                            <p><strong>参与人员:</strong> {details.participants}</p>
+                        {details.link && (
+                            <p>
+                                <strong>源码链接:</strong> 
+                                <a href={details.link} target="_blank" rel="noopener noreferrer" className="text-gray-800 dark:text-gray-200 hover:underline">
+                                    {details.link}
+                                </a>
+                            </p>
+                        )}
                         </div>
-
-                        <p className="text-base md:text-lg text-gray-700 dark:text-gray-300 overflow-y-auto flex-grow" dangerouslySetInnerHTML={{ __html: details.description }}></p>
                     </div>
 
                     {/* 右侧图片展示区 */}

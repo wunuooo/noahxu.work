@@ -1,12 +1,14 @@
 // src/components/Loader.js
 import Lottie from 'lottie-web';
-import React, { useEffect, useState } from 'react'; // Re-import useState
+import React, { useEffect, useState, useContext } from 'react'; // Re-import useState
 import { ModelLoadingState } from '../utils/ModelLoadingState';
+import { ThemeContext } from '../context/ThemeContext'; // Import ThemeContext
 
 import { useTranslation } from 'react-i18next';
 
 const Loader = ({ onLoadComplete }) => {
     const { t } = useTranslation();
+    const { theme } = useContext(ThemeContext);
     const animationData = '/assets/svg/loader.json';
     const [hasCompletedOneCycle, setHasCompletedOneCycle] = useState(false); // State lock
 
@@ -67,25 +69,12 @@ const Loader = ({ onLoadComplete }) => {
 
 
     return (
-        <div className="loader" style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100vh'
-        }}>
+        <div className="loader flex flex-col items-center justify-center h-screen bg-white dark:bg-black text-black dark:text-white">
             <div
                 id="logo_box"
-                style={{
-                    width: '150px',
-                    height: '150px'
-                }}
+                className="w-[150px] h-[150px] lottie-color-swap" // Use existing class for consistency
             ></div>
-            <p style={{
-                fontSize: '24px',
-                fontWeight: 'bold',
-                marginTop: '20px'
-            }}>
+            <p className="text-2xl font-bold mt-5">
                 {t('loader.loading')}
             </p>
         </div>
